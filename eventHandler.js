@@ -4,7 +4,7 @@ const fs = require('fs');
 const event = new EventEmitter();
 const filePath = './logs.txt';
 
-event.on('count', (data) => {
+event.on('writeLog', (data) => {
     fs.appendFile(filePath, data, 'utf8',
         function (err) {
             if (err) throw err;

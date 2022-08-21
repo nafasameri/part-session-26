@@ -5,7 +5,7 @@ const { event, filePath } = require('./eventHandler');
 const server = http.createServer((req, res) => {
     const { url, method } = req;
     const data = '\n' + JSON.stringify({ url: url, method: method, date: new Date(Date.now()).toUTCString() });
-    event.emit('count', data);
+    event.emit('writeLog', data);
 
     if (url == '/logs') {
         let readerStream = fs.createReadStream(filePath);
