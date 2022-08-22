@@ -5,11 +5,11 @@ http.request({
     port: process.env.port || 5000,
     path: '/',
     method: 'GET',
-}, (req) => {
-    req.on('data', (chunk) => {
+}, (res) => {
+    res.on('data', (chunk) => {
         console.log(chunk.toString());
     });
-    req.end();
+    res.end();
 }).end();
 
 
@@ -18,8 +18,8 @@ http.request({
     port: process.env.port || 5000,
     path: '/logs',
     method: 'GET',
-}, (req) => {
-    req.on('data', (chunk) => {
-        console.log(chunk.toString());
+}, (res) => {
+    res.on('data', (chunk) => {
+        console.log(JSON.parse(chunk.toString()));
     });
 }).end();

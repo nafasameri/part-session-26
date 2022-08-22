@@ -1,6 +1,7 @@
-const fs = require('fs');
 const http = require('http');
+const fs = require('fs');
 const { event, filePath } = require('./eventHandler');
+const port = process.env.port || 5000;
 
 const server = http.createServer((req, res) => {
     const { url, method } = req;
@@ -8,25 +9,23 @@ const server = http.createServer((req, res) => {
     event.emit('writeLog', data);
 
     if (url == '/logs') {
-        let readerStream = fs.createReadStream(filePath);
+        const reader = fs.createReadStream(filePath);
         let data = '';
 
-        readerStream.on('data', function (chunk) {
+        reader.on('data', function (chunk) {
             data += chunk;
         });
 
-        readerStream.on('end', function () {
-            res.write(data);
+        reader.on('end', function () {
+            res.write(JSON.stringify({ status: 200, message: data }));
             res.end();
         });
 
-        readerStream.on('error', function (err) {
+        reader.on('error', function (err) {
             console.log(err.stack);
         });
     }
 });
-
-const port = process.env.port || 5000;
 
 server.listen(port, () => {
     console.log(`server is running on port ${port}`);
